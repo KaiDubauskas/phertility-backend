@@ -22,8 +22,7 @@ for(let j = 0; j<data.message.body.track_list.length; j++){
 res.send(top10Songs);
 */
 
-//gets top 10 Taylor Swift Songs sorted by track rating
-app.get('/api/songs', function(req, res){
+//gets top 10 Taylor Swift Songs sorted by track ratings
     axios.get(`${url}/track.search?q_artist=taylor%20swift&page_size=10&page=1&s_track_rating=desc&apikey=${key}`)
   .then((response) => {
     const data = response.data;
@@ -69,11 +68,6 @@ axios.get('https://api.musixmatch.com/ws/1.1/matcher.lyrics.get?q_track=sexy%20a
   };
   
   
-
-
-
-
-
 
 
 
