@@ -4,35 +4,28 @@ const app = express();
 const router = express.Router();
 const bodyParser = require("body-parser");
 const axios = require('axios');
+const cors = require('cors');
+const corsOptions ={
+    origin:'*', 
+    credentials:true,
+    optionSuccessStatus:200,
+ }
+
 require('dotenv').config();
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors(corsOptions));
 
-const url = 'https://api.musixmatch.com/ws/1.1';
+
 const key = process.env.API_KEY;
 
-//gets top 10 Taylor Swift Songs sorted by track rating
-app.get('/api/songs', function(req, res){
-  axios.get(`${url}/track.search?q_artist=taylor%20swift&page_size=10&page=1&s_track_rating=desc&apikey=${key}`)
-.then((response) => {
-  const data = response.data;
-  const i = getRandomInt(data.length);
-  res.send(data.message.body.track_list);
-})
-.catch((error) => {
-  console.log(error);
-});
-});
- 
 
-//get lyrics for song based on id 
-app.get('/api/songs/lyrics/:id', function(req, res){
-  let idParam = parseInt(req.params.id);
-  axios.get(`${url}/track.lyrics.get?track_id=${idParam}&apikey=${key}`)
+app.get('/api/clinics/:lat/:long', function(req, res){
+  axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=Abortion%20Clinic&location=${req.params.lat}%2C${req.params.long}&radius=10000&key=${process.env.API_KEY}`)
 .then((response) => {
   const data = response.data;
-  res.send(data.message.body.lyrics.lyrics_body);
+  res.send(data);
 })
 .catch((error) => {
   console.log(error);
@@ -42,20 +35,5 @@ app.get('/api/songs/lyrics/:id', function(req, res){
 
 
 
-
-  
-  // Helper function - gets a random integer up to (but not including) the maximum
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-  };
-  
-  
-
-
-
-
-
-
-
-const port = 5004;
+const port = process.env.PORT || 5004;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
