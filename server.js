@@ -33,7 +33,5 @@ app.get('/api/clinics/:lat/:long', function(req, res){
 });
 
 
-
-
 const port = process.env.PORT || 5004;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
