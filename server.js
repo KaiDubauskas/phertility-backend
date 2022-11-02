@@ -5,11 +5,11 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const axios = require('axios');
 const cors = require('cors');
-const corsOptions ={
-    origin:'*', 
-    credentials:true,
-    optionSuccessStatus:200,
- }
+const corsOptions = {
+  origin: '*',
+  credentials: true,
+  optionSuccessStatus: 200,
+}
 
 require('dotenv').config();
 
@@ -21,15 +21,26 @@ app.use(cors(corsOptions));
 const key = process.env.API_KEY;
 
 
-app.get('/api/clinics/:lat/:long', function(req, res){
+app.get('/api/clinics/:lat/:long', function (req, res) {
   axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=Abortion%20Clinic&location=${req.params.lat}%2C${req.params.long}&radius=10000&key=${process.env.API_KEY}`)
-.then((response) => {
-  const data = response.data;
-  res.send(data);
-})
-.catch((error) => {
-  console.log(error);
+    .then((response) => {
+      const data = response.data;
+      res.send(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
+
+app.get('/api/contraceptives/:lat/:long', function (req, res) {
+  axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=Contraceptive%20Clinic&location=${req.params.lat}%2C${req.params.long}&radius=10000&key=${process.env.API_KEY}`)
+    .then((response) => {
+      const data = response.data;
+      res.send(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 
